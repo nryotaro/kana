@@ -1,27 +1,36 @@
+use gtk::glib;
 use gtk::prelude::*;
-use gtk::{Application, ApplicationWindow, Button};
+use gtk::{ApplicationWindow, Box, Button, Label, Paned};
 
 fn main() {
-    let application = Application::builder()
-        .application_id("com.example.FirstGtkApp")
-        .build();
-
-    application.connect_activate(|app| {
-        let window = ApplicationWindow::builder()
-            .application(app)
-            .title("First GTK Program")
-            .default_width(350)
-            .default_height(70)
-            .build();
-
-        let button = Button::with_label("Click me!");
-        button.connect_clicked(|_| {
-            eprintln!("Clicked!");
-        });
-        window.add(&button);
-
-        window.show_all();
-    });
+    let application = gtk::Application::new(Some("nryotaro.dev.kana"), Default::default());
+    application.connect_activate(build_ui);
 
     application.run();
+}
+
+fn build_ui(application: &gtk::Application) {
+    let glade_src = include_str!("main.ui");
+    let builder = gtk::Builder::from_string(glade_src);
+
+    let window: ApplicationWindow = builder.object("window").expect("Couldn't get window");
+    window.set_application(Some(application));
+    let button: Button = builder.object("button").expect("Couldn't get button");
+
+    let menu_builder = gtk::Builder::from_string(include_str!("menu.ui"));
+    let gtk_box: Box = menu_builder.object("box").expect("Couldn't get doge");
+    let label: Label = builder.object("label").expect("Couldn't get label");
+
+    let paned: Paned = builder.object("paned").expect("Couldn't get paned");
+    button.connect_clicked(move |_| {
+        &paned.remove(&label);
+        &paned.add2(&gtk_box);
+        gtk_box.show_all();
+    });
+    /*
+    button.connect_clicked(glib::clone!(@weak paned =>  move |_| {
+        &paned.remove(&label);
+    }));
+    */
+    window.show_all();
 }

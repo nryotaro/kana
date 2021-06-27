@@ -1,1 +1,7 @@
+# rust
 /target
+# vscode
+.vscode
+# backup
+*~
+\#*\#
