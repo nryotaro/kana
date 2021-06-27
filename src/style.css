@@ -1,25 +1,24 @@
-.stack-switcher button {
-	background-image: none;
-	background-color: rgba(0, 0, 0, 0);
-	background-repeat: no-repeat;
-	min-height: 40px;
-	border-width: 0;
-	min-width: 40px;
-	margin-bottom: 10px;
-	border-radius: 50%;
+.stack-switcher {
 }
+
 .stack-switcher button:first-child {
-	background-image: none;
-	background-color: red;
+	background-image: url('https://raw.githubusercontent.com/google/material-design-icons/master/png/image/collections/materialiconsoutlined/48dp/2x/outline_collections_black_48dp.png');
 	background-repeat: no-repeat;
-	min-height: 40px;
-	border-width: 0;
+	background-position: center;
+	background-size: 36px 36px;
 	min-width: 40px;
-	margin-bottom: 10px;
-	border-radius: 50%;
+	min-height: 40px;
+	box-shadow: none;
+	/*background-color: rgba(0, 0, 0, 0.56)*/
 }
-.stack-switcher button:focus {
-	background-color: rgba(0, 0, 0, 0);
-	border-width: 0;
-	background-image: none;
+
+.stack-switcher button:nth-child(2) {
+	background-image: url('https://raw.githubusercontent.com/google/material-design-icons/master/png/action/settings/materialiconsoutlined/48dp/2x/outline_settings_black_48dp.png');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 36px 36px;
+	min-width: 40px;
+	min-height: 40px;
+	box-shadow: none;
+	/*background-color: rgba(0, 0, 0, 0.56)*/
 }
