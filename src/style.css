@@ -1,0 +1,8 @@
+.stack-switcher button {
+	background-image: url('https://raw.githubusercontent.com/google/material-design-icons/master/src/search/bed/materialiconssharp/24px.svg');
+	background-color: yellow;
+	color: red;
+	min-height: 100px;
+	min-width: 100px;
+	border-radius: 50%;
+}

@@ -1,10 +1,26 @@
-use gtk::glib;
 use gtk::prelude::*;
-use gtk::{ApplicationWindow, Box, Button, Label, Paned};
+use gtk::{gdk, gio, ApplicationWindow};
 
 fn main() {
-    let application = gtk::Application::new(Some("nryotaro.dev.kana"), Default::default());
-    application.connect_activate(build_ui);
+    let application =
+        gtk::Application::new(Some("dev.nryotaro.kana"), gio::ApplicationFlags::empty());
+
+    application.connect_startup(|app| {
+        let provider = gtk::CssProvider::new();
+        // Load the CSS file
+        let style = include_bytes!("style.css");
+        provider.load_from_data(style).expect("Failed to load CSS");
+        // We give the CssProvided to the default screen so the CSS rules we added
+        // can be applied to our window.
+        gtk::StyleContext::add_provider_for_screen(
+            &gdk::Screen::default().expect("Error initializing gtk css provider."),
+            &provider,
+            gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+        );
+
+        // We build the application UI.
+        build_ui(app);
+    });
 
     application.run();
 }
@@ -16,9 +32,6 @@ fn build_ui(application: &gtk::Application) {
     let window: ApplicationWindow = builder.object("window").expect("Couldn't get window");
     window.set_application(Some(application));
 
-    include_str!("style.css");
-    let css_provider = gtk::CssProvider::new();
-    css_provider.load_from_data(css_str).unwrap();
     /*
     let button: Button = builder.object("button").expect("Couldn't get button");
 
@@ -33,5 +46,7 @@ fn build_ui(application: &gtk::Application) {
         gtk_box.show_all();
     });
     */
-    window.show_all();
+    application.connect_activate(move |_| {
+        window.show_all();
+    });
 }
