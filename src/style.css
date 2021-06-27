@@ -1,8 +1,25 @@
 .stack-switcher button {
-	background-image: url('https://raw.githubusercontent.com/google/material-design-icons/master/src/search/bed/materialiconssharp/24px.svg');
-	background-color: yellow;
-	color: red;
-	min-height: 100px;
-	min-width: 100px;
+	background-image: none;
+	background-color: rgba(0, 0, 0, 0);
+	background-repeat: no-repeat;
+	min-height: 40px;
+	border-width: 0;
+	min-width: 40px;
+	margin-bottom: 10px;
 	border-radius: 50%;
+}
+.stack-switcher button:first-child {
+	background-image: none;
+	background-color: red;
+	background-repeat: no-repeat;
+	min-height: 40px;
+	border-width: 0;
+	min-width: 40px;
+	margin-bottom: 10px;
+	border-radius: 50%;
+}
+.stack-switcher button:focus {
+	background-color: rgba(0, 0, 0, 0);
+	border-width: 0;
+	background-image: none;
 }
