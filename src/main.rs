@@ -15,6 +15,11 @@ fn build_ui(application: &gtk::Application) {
 
     let window: ApplicationWindow = builder.object("window").expect("Couldn't get window");
     window.set_application(Some(application));
+
+    include_str!("style.css");
+    let css_provider = gtk::CssProvider::new();
+    css_provider.load_from_data(css_str).unwrap();
+    /*
     let button: Button = builder.object("button").expect("Couldn't get button");
 
     let menu_builder = gtk::Builder::from_string(include_str!("menu.ui"));
@@ -27,10 +32,6 @@ fn build_ui(application: &gtk::Application) {
         &paned.add2(&gtk_box);
         gtk_box.show_all();
     });
-    /*
-    button.connect_clicked(glib::clone!(@weak paned =>  move |_| {
-        &paned.remove(&label);
-    }));
     */
     window.show_all();
 }
