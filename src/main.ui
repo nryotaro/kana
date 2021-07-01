@@ -75,7 +75,7 @@
                     <property name="label" translatable="yes">Settings</property>
                     <property name="xalign">0</property>
                     <style>
-                      <class name="settings"/>
+                      <class name="title"/>
                     </style>
                   </object>
                   <packing>
@@ -93,7 +93,12 @@
                       <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="hexpand">False</property>
                         <property name="label" translatable="yes">Root directory</property>
+                        <style>
+                          <class name="root-directory-caption"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -125,6 +130,9 @@
                     <property name="position">1</property>
                   </packing>
                 </child>
+                <style>
+                  <class name="settings"/>
+                </style>
               </object>
               <packing>
                 <property name="position">1</property>

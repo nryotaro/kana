@@ -21,6 +21,15 @@
 }
 
 .settings {
-	font-size: 2em;
-	margin: 1em 0 0 1em;
+	margin: 0 2rem;
+}
+
+.settings .title {
+	margin: 1em 0;
+	font-size: 2rem;
+}
+
+.settings .root-directory-caption {
+	font-size: 1rem;
+	margin-bottom: 0.8rem;
 }
