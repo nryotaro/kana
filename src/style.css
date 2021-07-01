@@ -1,35 +1,29 @@
-.stack-switcher button:first-child {
-	background-image: url('https://raw.githubusercontent.com/google/material-design-icons/master/png/image/collections/materialiconsoutlined/48dp/2x/outline_collections_black_48dp.png');
-	background-repeat: no-repeat;
-	background-position: center;
-	background-size: 36px 36px;
-	min-width: 40px;
-	min-height: 40px;
-	box-shadow: none;
-	/*background-color: rgba(0, 0, 0, 0.56)*/
+.stack-switcher button {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 2.4rem 2.4rem;
+  min-width: 3rem;
+  min-height: 3rem;
+  box-shadow: none;
+  /*background-color: rgba(0, 0, 0, 0.56)*/
 }
-
+.stack-switcher button:first-child {
+  background-image: url('https://raw.githubusercontent.com/google/material-design-icons/master/png/image/collections/materialiconsoutlined/48dp/2x/outline_collections_black_48dp.png');
+}
 .stack-switcher button:nth-child(2) {
-	background-image: url('https://raw.githubusercontent.com/google/material-design-icons/master/png/action/settings/materialiconsoutlined/48dp/2x/outline_settings_black_48dp.png');
-	background-repeat: no-repeat;
-	background-position: center;
-	background-size: 36px 36px;
-	min-width: 40px;
-	min-height: 40px;
-	box-shadow: none;
-	/*background-color: rgba(0, 0, 0, 0.56)*/
+  background-image: url('https://raw.githubusercontent.com/google/material-design-icons/master/png/action/settings/materialiconsoutlined/48dp/2x/outline_settings_black_48dp.png');
 }
 
 .settings {
-	margin: 0 2rem;
+  margin: 0 2rem;
 }
 
 .settings .title {
-	margin: 1em 0;
-	font-size: 2rem;
+  margin: 1em 0;
+  font-size: 2rem;
 }
 
 .settings .root-directory-caption {
-	font-size: 1rem;
-	margin-bottom: 0.8rem;
+  font-size: 1.6rem;
+  margin-bottom: 0.8rem;
 }
