@@ -7,3 +7,4 @@ edition = "2018"
 
 [dependencies]
 gtk = "0.14.0"
+smbc = "0.1.0"

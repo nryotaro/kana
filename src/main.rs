@@ -1,5 +1,6 @@
 use gtk::prelude::*;
 use gtk::{gdk, gio, ApplicationWindow};
+mod ui;
 
 fn main() {
     let application =
