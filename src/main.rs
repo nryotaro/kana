@@ -9,7 +9,7 @@ fn main() {
     application.connect_startup(|app| {
         let provider = gtk::CssProvider::new();
         // Load the CSS file
-        let style = include_bytes!("style.css");
+        let style = include_bytes!("ui/style.css");
         provider.load_from_data(style).expect("Failed to load CSS");
         // We give the CssProvided to the default screen so the CSS rules we added
         // can be applied to our window.
@@ -27,7 +27,7 @@ fn main() {
 }
 
 fn build_ui(application: &gtk::Application) {
-    let glade_src = include_str!("main.ui");
+    let glade_src = include_str!("ui/main.ui");
     let builder = gtk::Builder::from_string(glade_src);
 
     let window: ApplicationWindow = builder.object("window").expect("Couldn't get window");
