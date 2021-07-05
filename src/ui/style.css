@@ -5,8 +5,10 @@
   min-width: 3rem;
   min-height: 3rem;
   box-shadow: none;
-  /*background-color: rgba(0, 0, 0, 0.56)*/
+  /* margin: 0.00001rem; margin can remove thin borders. */
+  border: none;
 }
+
 .stack-switcher button:first-child {
   background-image: url('https://raw.githubusercontent.com/google/material-design-icons/master/png/image/collections/materialiconsoutlined/48dp/2x/outline_collections_black_48dp.png');
 }
@@ -27,3 +29,15 @@
   font-size: 1.6rem;
   margin-bottom: 0.8rem;
 }
+
+.settings .root_directory_search_message {
+  margin-top: 0.8rem;
+  color: #F15025;
+}
+/*
+f15025
+ffffff
+e6e8e6
+ced0ce
+191919
+*/
