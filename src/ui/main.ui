@@ -113,6 +113,9 @@
                         <property name="halign">start</property>
                         <property name="hexpand">False</property>
                         <property name="label" translatable="yes">The names of the child directories should be those of authors.</property>
+                        <style>
+                          <class name="root_directory_search_description"/>
+                        </style>
                       </object>
                       <packing>
                         <property name="expand">False</property>

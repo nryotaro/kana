@@ -30,6 +30,10 @@
   margin-bottom: 0.8rem;
 }
 
+.settings .root_directory_search_description {
+  margin-bottom: 0.4rem;
+}
+
 .settings .root_directory_search_message {
   margin-top: 0.8rem;
   color: #F15025;
