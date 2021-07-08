@@ -1,3 +1,3 @@
-struct Configuration {
-	root_directory: Option[str];
+pub trait Configuration {
+	fn get_root_directory(&self) -> Option<String>;
 }
