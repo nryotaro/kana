@@ -5,7 +5,8 @@ pub fn initialize_root_search(search_entry: SearchEntry) {
 	search_entry.connect_changed(move |entry| {
 		let text = String::from(entry.text().as_str());
 		println!("{}", text);
-
+		// idle_add
+		// futureかasyncを使う wrapperを用意する。
 	});
 }
 /*
