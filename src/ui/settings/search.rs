@@ -2,6 +2,7 @@ use gtk::prelude::*;
 use gtk::{gdk, gio, SearchEntry};
 
 pub fn initialize_root_search(search_entry: SearchEntry) {
+	// /usr/share/doc/libsmbclient-dev/examples/
 	search_entry.connect_changed(move |entry| {
 		let text = String::from(entry.text().as_str());
 		println!("{}", text);
