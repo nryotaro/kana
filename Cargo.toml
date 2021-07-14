@@ -2,6 +2,7 @@
 name = "kana"
 version = "0.1.0"
 edition = "2018"
+build = "build.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -9,3 +10,6 @@ edition = "2018"
 gtk = "0.14.0"
 smbc = "0.1.0"
 serde_json = "1.0.59"
+
+[build-dependencies]
+bindgen = "0.58.1"
