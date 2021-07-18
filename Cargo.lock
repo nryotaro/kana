@@ -507,6 +507,7 @@ version = "0.1.0"
 dependencies = [
  "bindgen",
  "gtk",
+ "pkg-config",
  "serde_json",
  "smbc",
 ]
