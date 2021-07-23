@@ -1,4 +1,5 @@
 extern crate bindgen;
+extern crate cc;
 extern crate pkg_config;
 
 use std::env;
@@ -7,7 +8,12 @@ use std::path::PathBuf;
 fn main() {
     let lib: pkg_config::Library = pkg_config::Config::new().probe("smbclient").unwrap();
     println!("cargo:rustc-link-lib=smbclient");
-
+    /*
+    cc::Build::new()
+        .file("src/persistence/smbclient.c")
+        .include(lib.include_paths[0].to_str().unwrap())
+        .compile("smbclient");
+        */
     // Tell cargo to invalidate the built crate whenever the wrapper changes
     println!("cargo:rerun-if-changed=wrapper.h");
 
