@@ -3,8 +3,11 @@
 #![allow(non_snake_case)]
 use std::ffi::CStr;
 use std::ffi::CString;
-use std::os::raw::{c_char, c_int};
+use std::fs::File;
+use std::mem::size_of;
+use std::os::raw::{c_char, c_int, c_void};
 use std::ptr::copy_nonoverlapping;
+use std::io::prelude::*;
 
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 
@@ -48,6 +51,37 @@ pub fn temp() {
 		let _smbcctx: *mut _SMBCCTX = smbc_new_context();
 		smbc_setDebug(_smbcctx, 1);
 		smbc_setFunctionAuthDataWithContext(_smbcctx, Some(helper));
+		if smbc_init_context(_smbcctx).is_null() {
+			smbc_free_context(_smbcctx, 0);
+			panic!("Could not initialize smbc context.");
+		}
+		smbc_set_context(_smbcctx);
+		let path = CString::new(
+			"smb://192.168.1.2/share/documents/manga/001.jpg",
+		)
+		.unwrap();
+		let fd = smbc_open(path.as_ptr(), O_RDONLY as i32, 0);
+
+		if fd < 0 {
+			panic!("cannot open");
+		}
+		let dstlen = 80000000;
+		let mut a = vec![0_u8; dstlen];
+		let mut buffer: *mut c_void;
+		buffer = a.as_mut_ptr() as *mut c_void;
+		let ret = smbc_read(fd, buffer, dstlen as u64);
+		println!("{}, ", ret);
+		let mut c = File::create("doge.jpg").unwrap();
+		c.write(&a[0..(ret as usize)]).unwrap();
+		c.flush().unwrap();
+	};
+}
+
+pub fn temp1() {
+	unsafe {
+		let _smbcctx: *mut _SMBCCTX = smbc_new_context();
+		smbc_setDebug(_smbcctx, 1);
+		smbc_setFunctionAuthDataWithContext(_smbcctx, Some(helper));
 		//smbc_setOptionUseKerberos(_smbcctx, 1);
 		//smbc_setOptionFallbackAfterKerberos(_smbcctx, 1);
 		if smbc_init_context(_smbcctx).is_null() {
@@ -55,7 +89,9 @@ pub fn temp() {
 			panic!("Could not initialize smbc context.");
 		}
 		smbc_set_context(_smbcctx);
-		let path = CString::new("smb://192.168.1.2/share/documents/manga").unwrap();
+		let path =
+			CString::new("smb://192.168.1.2/share/documents/manga/")
+				.unwrap();
 		let a: *const c_char = path.as_ptr();
 		let fd = smbc_getFunctionOpendir(_smbcctx).unwrap()(_smbcctx, a);
 		if fd.is_null() {
