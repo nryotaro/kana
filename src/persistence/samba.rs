@@ -19,7 +19,6 @@ extern "C" fn helper(
 	pw: *mut c_char,
 	pwlen: c_int,
 ) {
-	println!("doge");
 	unsafe {
 		// srv -> 192.168.1.2
 		/*
@@ -56,8 +55,20 @@ pub fn temp() {
 			panic!("Could not initialize smbc context.");
 		}
 		smbc_set_context(_smbcctx);
-		let path = CString::new("smb://192.168.1.2/share/documents").unwrap();
+		let path = CString::new("smb://192.168.1.2/share/documents/manga").unwrap();
 		let a: *const c_char = path.as_ptr();
+		let fd = smbc_getFunctionOpendir(_smbcctx).unwrap()(_smbcctx, a);
+		if fd.is_null() {
+			panic!("failed to open");
+		}
+		let mut dirent = smbc_getFunctionReaddir(_smbcctx).unwrap()(_smbcctx, fd);
+		while !dirent.is_null() {
+			let c_str: &CStr = CStr::from_ptr(&(*dirent).name[0]);
+			println!("{}", c_str.to_str().unwrap());
+			dirent = smbc_getFunctionReaddir(_smbcctx).unwrap()(_smbcctx, fd);
+		}
+
+		/*
 		let d = smbc_opendir(a);
 		if d < 0 {
 			panic!("failed to opendir");
@@ -66,8 +77,6 @@ pub fn temp() {
 		if dirent.is_null() {
 			panic!("null@@");
 		}
-		let b = (*dirent).smbc_type;
-		let n = (*dirent).name;
-		println!("{}, ", b, n[0]);
+		*/
 	};
 }
