@@ -1,12 +1,12 @@
 use gtk::prelude::*;
-mod core;
-mod persistence;
-mod port;
-mod ui;
+use kana::port;
+use kana::persistence::samba::{SambaClient};
+
+
 
 fn main() {
 
-    let a: persistence::samba::SambaClient = port::DocumentRepository::new("");
+    let a: SambaClient = port::DocumentRepository::new("");
     /*
     let configuration = persistence::config::load_config();
     let application = ui::initialize();
