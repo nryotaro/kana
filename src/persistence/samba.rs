@@ -1,7 +1,7 @@
 mod wrapper;
 use crate::port::DocumentRepository;
 use std::ffi::CString;
-use std::os::raw::{c_char, c_int, c_void};
+use std::os::raw::{c_char, c_int};
 
 pub struct SambaClient {
 	smbcctx: *mut wrapper::_SMBCCTX,
@@ -10,28 +10,17 @@ pub struct SambaClient {
 
 impl DocumentRepository for SambaClient {
 	fn new(url: &'static str) -> Option<Box<Self>> {
-		let smbcctx: *mut wrapper::_SMBCCTX = unsafe {
-			let smbcctx = wrapper::smbc_new_context();
-			if smbcctx.is_null() {
-				return None;
-			}
-			wrapper::smbc_setFunctionAuthDataWithContext(smbcctx, Some(helper));
-			if wrapper::smbc_init_context(smbcctx).is_null() {
-				wrapper::smbc_free_context(smbcctx, 0);
-				return None;
-			}
-			// いらないかも
-			wrapper::smbc_set_context(smbcctx);
-			smbcctx
-		};
-		unsafe {
-			let path = CString::new(url).unwrap();
+		let path = CString::new(url).unwrap();
+		let smbcctx = unsafe {
+			let smbcctx: *mut wrapper::_SMBCCTX = create_smbcctx().unwrap();
 			let fd = wrapper::smbc_getFunctionOpendir(smbcctx).unwrap()(smbcctx, path.as_ptr());
-			println!("doge");
 			if fd.is_null() {
-				close_smbcctx(smbcctx);
+				delete_smbcctx(smbcctx);
 				return None;
+			} else {
+				wrapper::smbc_getFunctionClose(smbcctx).unwrap()(smbcctx, fd);
 			}
+			smbcctx
 		};
 
 		Some(Box::new(SambaClient {
@@ -39,17 +28,32 @@ impl DocumentRepository for SambaClient {
 			url: url.to_string(),
 		}))
 	}
-}
-
-extern "C" fn close_smbcctx(smbcctx: *mut wrapper::_SMBCCTX) {
-	unsafe {
-		wrapper::smbc_getFunctionPurgeCachedServers(smbcctx).unwrap()(smbcctx);
-		wrapper::smbc_free_context(smbcctx, 1);
+	fn close(&self) {
+		unsafe {
+			delete_smbcctx(self.smbcctx);
+		}
 	}
 }
 
-extern "C" fn helper(
-	_context: *mut wrapper::_SMBCCTX,
+unsafe fn create_smbcctx() -> Option<*mut wrapper::_SMBCCTX> {
+	let smbcctx = wrapper::smbc_new_context();
+	if smbcctx.is_null() {
+		return None;
+	}
+	wrapper::smbc_setFunctionAuthData(smbcctx, Some(helper));
+	if wrapper::smbc_init_context(smbcctx).is_null() {
+		wrapper::smbc_free_context(smbcctx, 1);
+		return None;
+	}
+	Some(smbcctx)
+}
+
+unsafe extern "C" fn delete_smbcctx(smbcctx: *mut wrapper::_SMBCCTX) {
+	wrapper::smbc_getFunctionPurgeCachedServers(smbcctx).unwrap()(smbcctx);
+	wrapper::smbc_free_context(smbcctx, 1);
+}
+
+unsafe extern "C" fn helper(
 	_server: *const c_char,
 	_share: *const c_char,
 	_workgroup: *mut c_char,
