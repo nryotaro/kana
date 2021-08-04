@@ -1,13 +1,32 @@
+use crate::core::document;
 use gtk::prelude::*;
 use gtk::{gdk, gio, SearchEntry};
+use std::result;
+use std::sync::mpsc;
+use std::thread;
 
-pub fn initialize_root_search(search_entry: SearchEntry) {
-	// /usr/share/doc/libsmbclient-dev/examples/
+pub fn initialize_root_search(
+	search_entry: SearchEntry,
+	document_sender: &'static mpsc::Sender<document::DocumentMessage>,
+) {
+	let (response_sender, response_receiver): (
+		mpsc::Sender<Result<(), String>>,
+		mpsc::Receiver<Result<(), String>>,
+	) = mpsc::channel();
 	search_entry.connect_changed(move |entry| {
 		let text = String::from(entry.text().as_str());
-		println!("{}", text);
+		document_sender.send(document::DocumentMessage::ReadRoot {
+			uri: String::from(text),
+			destination: response_sender,
+		});
+		thread::spawn(move || {
+			let result = response_receiver.recv().unwrap();
+			match result {
+				Ok(v) => println!("dogee"),
+				Err(a) => println!("foobar"),
+			};
+		});
 		// idle_add
-		// futureかasyncを使う wrapperを用意する。
 	});
 }
 /*

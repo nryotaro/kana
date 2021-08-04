@@ -8,6 +8,7 @@ use std::sync::mpsc;
 use std::thread;
 
 fn main() {
+    /*
     let a: Option<Box<SambaClient>> =
         port::DocumentRepository::new("smb://192.168.1.2/share/documents/manga/");
 
@@ -25,6 +26,7 @@ fn main() {
         uri: "".to_string(),
         destination: sender2,
     });
+    */
     //sender.send();
 
     let sender = document::initialize_document_thread();

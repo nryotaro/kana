@@ -14,7 +14,7 @@ pub fn initialize_document_thread() -> mpsc::Sender<DocumentMessage> {
 		mpsc::Receiver<DocumentMessage>,
 	) = mpsc::channel();
 	thread::spawn(move || loop {
-		let a = receiver.recv().unwrap();
+		receiver.recv().unwrap();
 	});
 	sender
 }
