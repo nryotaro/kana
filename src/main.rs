@@ -14,10 +14,7 @@ fn main() {
     let b: Box<dyn kana::port::DocumentRepository> = a.unwrap();
     b.close();
 
-    let (sender2, receiver2): (
-        mpsc::Sender<bool>,
-        mpsc::Receiver<bool>,
-    ) = mpsc::channel();
+    let (sender2, receiver2): (mpsc::Sender<bool>, mpsc::Receiver<bool>) = mpsc::channel();
 
     let (sender, receiver): (
         mpsc::Sender<document::DocumentMessage>,
@@ -29,11 +26,9 @@ fn main() {
         destination: sender2,
     });
     //sender.send();
-    let document_actor = thread::spawn(move || loop {
-        let (sender, item) = receiver.recv().unwrap();
-    });
 
+    let sender = document::initialize_document_thread();
     let configuration = config::load_config();
-    let application = ui::initialize();
+    let application = ui::initialize(sender);
     application.run();
 }
