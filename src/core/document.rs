@@ -4,7 +4,7 @@ use std::thread;
 pub enum DocumentMessage {
 	ReadRoot {
 		uri: String,
-		destination: mpsc::Sender<bool>,
+		destination: mpsc::Sender<Result<(), String>>,
 	},
 }
 
