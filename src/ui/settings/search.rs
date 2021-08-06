@@ -1,9 +1,7 @@
 use crate::core::document;
 use gtk::prelude::*;
-use gtk::{gdk, gio, SearchEntry};
-use std::result;
+use gtk::SearchEntry;
 use std::sync::mpsc;
-use std::thread;
 
 pub fn initialize_root_search(
 	search_entry: SearchEntry,
@@ -14,7 +12,6 @@ pub fn initialize_root_search(
 		mpsc::Receiver<Result<(), String>>,
 	) = mpsc::channel();
 	{
-
 		search_entry.connect_changed(|entry| {
 			let text = String::from(entry.text().as_str());
 			/*

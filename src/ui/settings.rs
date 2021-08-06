@@ -1,6 +1,6 @@
 use crate::core::document;
 use gtk::prelude::*;
-use gtk::{gdk, gio, SearchEntry};
+use gtk::SearchEntry;
 use std::sync::mpsc;
 mod search;
 

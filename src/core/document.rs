@@ -2,13 +2,11 @@ use std::sync::mpsc;
 use std::thread;
 
 pub enum DocumentMessage {
-	ReadRoot {
-		uri: String,
-		source: Source,
-	},
+	ReadRoot { uri: String, 
+		source: Source },
 }
 pub enum Source {
-	SettingSearch
+	SettingSearch,
 }
 
 pub fn initialize_document_thread<'a>() -> mpsc::Sender<DocumentMessage> {
