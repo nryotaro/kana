@@ -21,14 +21,14 @@ pub fn initialize(document_sender: mpsc::Sender<document::DocumentMessage>) -> g
 			gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
 		);
 		// We build the application UI.
-		build_ui(app, &document_sender);
+		build_ui(app, document_sender);
 	});
 	application
 }
 
 fn build_ui(
 	application: &gtk::Application,
-	document_sender: &mpsc::Sender<document::DocumentMessage>,
+	document_sender: mpsc::Sender<document::DocumentMessage>,
 ) {
 	let builder: gtk::Builder = gtk::Builder::from_string(include_str!("ui/main.ui"));
 	let window: gtk::ApplicationWindow = builder.object("window").expect("Couldn't get window");

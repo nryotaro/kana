@@ -2,6 +2,8 @@
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
 #![allow(dead_code)]
+#![allow(unused_imports)]
+#![allow(unused_variables)]
 use std::ffi::CStr;
 use std::ffi::CString;
 use std::fs::File;
@@ -68,7 +70,7 @@ pub fn temp() {
 		}
 		let dstlen = 80000000;
 		let mut a = vec![0_u8; dstlen];
-		let mut buffer: *mut c_void;
+		let buffer: *mut c_void;
 		buffer = a.as_mut_ptr() as *mut c_void;
 		let ret = smbc_read(fd, buffer, dstlen as u64);
 		println!("{}, ", ret);

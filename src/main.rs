@@ -28,7 +28,8 @@ fn main() {
     });
     */
     //sender.send();
-
+    let (setting_root_sender, setting_root_sender): (mpsc::Sender<bool>, mpsc::Receiver<bool>) =
+        mpsc::channel();
     let sender = document::initialize_document_thread();
     let configuration = config::load_config();
     let application = ui::initialize(sender);

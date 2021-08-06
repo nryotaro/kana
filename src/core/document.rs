@@ -4,17 +4,20 @@ use std::thread;
 pub enum DocumentMessage {
 	ReadRoot {
 		uri: String,
-		destination: mpsc::Sender<Result<(), String>>,
+		source: Source,
 	},
 }
+pub enum Source {
+	SettingSearch
+}
 
-pub fn initialize_document_thread() -> mpsc::Sender<DocumentMessage> {
+pub fn initialize_document_thread<'a>() -> mpsc::Sender<DocumentMessage> {
 	let (sender, receiver): (
 		mpsc::Sender<DocumentMessage>,
 		mpsc::Receiver<DocumentMessage>,
 	) = mpsc::channel();
 	thread::spawn(move || loop {
-		receiver.recv().unwrap();
+		&receiver.recv().unwrap();
 	});
 	sender
 }

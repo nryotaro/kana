@@ -6,7 +6,7 @@ mod search;
 
 pub fn initialize(
 	builder: gtk::Builder,
-	document_sender: &'static mpsc::Sender<document::DocumentMessage>,
+	document_sender: &mpsc::Sender<document::DocumentMessage>,
 ) {
 	let search_entry: SearchEntry = builder
 		.object("root_directory_search")
