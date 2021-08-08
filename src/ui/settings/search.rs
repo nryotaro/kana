@@ -2,34 +2,32 @@ use crate::core::document;
 use gtk::prelude::*;
 use gtk::SearchEntry;
 use std::sync::mpsc;
+use std::thread;
 
 pub fn initialize_root_search(
 	search_entry: SearchEntry,
 	document_sender: &mpsc::Sender<document::DocumentMessage>,
 ) {
-	let (response_sender, response_receiver): (
-		mpsc::Sender<Result<(), String>>,
-		mpsc::Receiver<Result<(), String>>,
-	) = mpsc::channel();
-	{
-		search_entry.connect_changed(|entry| {
-			let text = String::from(entry.text().as_str());
-			/*
-			&document_sender.send(document::DocumentMessage::ReadRoot {
-				uri: String::from(text),
-				destination: response_sender,
-			});
-			thread::spawn(move || {
-				let result = response_receiver.recv().unwrap();
-				match result {
-					Ok(v) => println!("dogee"),
-					Err(a) => println!("foobar"),
-				};
-			});
-			*/
-			// idle_add
+	let a = document_sender.clone();
+	search_entry.connect_changed(move |entry| {
+		let text = String::from(entry.text().as_str());
+		let (response_sender, response_receiver): (
+			mpsc::Sender<Result<(), String>>,
+			mpsc::Receiver<Result<(), String>>,
+		) = mpsc::channel();
+		&a.send(document::DocumentMessage::ReadRoot {
+			uri: String::from(text),
+			destination: response_sender,
 		});
-	}
+		thread::spawn(move || {
+			let result = &response_receiver.recv().unwrap();
+			match result {
+				Ok(v) => println!("dogee"),
+				Err(a) => println!("foobar"),
+			};
+		});
+		// idle_add
+	});
 }
 /*
 fn build_ui(application: &gtk::Application) {
