@@ -3,6 +3,7 @@ use gtk::prelude::*;
 use gtk::{gdk, gio};
 use std::sync::mpsc;
 mod settings;
+mod sidebar;
 
 pub fn initialize(document_sender: mpsc::Sender<document::DocumentMessage>) -> gtk::Application {
 	let application =
@@ -30,9 +31,11 @@ fn build_ui(
 	application: &gtk::Application,
 	document_sender: &mpsc::Sender<document::DocumentMessage>,
 ) {
-	let builder: gtk::Builder = gtk::Builder::from_string(include_str!("ui/main.ui"));
+	//let builder: gtk::Builder = gtk::Builder::from_string(include_str!("ui/main.ui"));
+	let builder: gtk::Builder = gtk::Builder::from_string(include_str!("ui/design.ui"));
 	let window: gtk::ApplicationWindow = builder.object("window").expect("Couldn't get window");
 	window.set_application(Some(application));
+	sidebar::initialize(&builder);
 	settings::initialize(builder, &document_sender);
 	application.connect_activate(move |_| {
 		window.show_all();
