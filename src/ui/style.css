@@ -1,6 +1,7 @@
 .sidebar {
   min-width: 30px;
-  background-color: #ffffff;
+  background-color: #e6e8e6;
+  border: none;
 }
 
 .sidebarButton {
@@ -8,7 +9,7 @@
   border: none;
   background-image: none;
   box-shadow: none;
-  background-color: #ffffff;
+  background-color: #e6e8e6;
 }
 
 /*
