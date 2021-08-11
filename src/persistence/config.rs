@@ -1,8 +1,8 @@
-use crate::core::state::{Configuration};
-
-pub struct FileConfig {
-
-}
+use crate::core::state::{Configuration, ConfigurationMessage};
+use std::sync::mpsc;
+use std::thread;
+/*
+pub struct FileConfig {}
 
 impl Configuration for FileConfig {
 	fn get_root_directory(&self) -> Option<String> {
@@ -10,6 +10,10 @@ impl Configuration for FileConfig {
 	}
 }
 
-pub fn load_config() -> impl Configuration  {
-	FileConfig{}
+pub fn load_config() -> impl Configuration {
+	FileConfig {}
 }
+
+
+
+*/
