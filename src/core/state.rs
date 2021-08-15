@@ -2,7 +2,13 @@ use std::sync::mpsc;
 use std::thread;
 
 pub struct Configuration {
-	root_uri: String,
+	root_uri: Option<String>,
+}
+
+impl Configuration {
+	pub fn new(root_uri: Option<String>) -> Configuration {
+		Configuration { root_uri }
+	}
 }
 
 pub enum ConfigurationMessage {
@@ -34,14 +40,16 @@ pub fn initialize_setting_thread(
 					destination,
 				} => {
 					save_fn(&configuration).unwrap();
-					destination.send(Ok(()));
+					destination.send(Ok(())).unwrap();
 					config = configuration;
 				}
 				ConfigurationMessage::Load { destination } => {
 					//let a= config.root_uri.clone();
-					destination.send(Configuration {
-						root_uri: config.root_uri.clone(),
-					});
+					destination
+						.send(Configuration {
+							root_uri: config.root_uri.clone(),
+						})
+						.unwrap();
 				}
 			};
 		}

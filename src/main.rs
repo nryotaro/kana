@@ -28,6 +28,9 @@ fn main() {
     });
     */
     //sender.send();
+
+    config::initialize_base_dir(config::get_base_dir()).unwrap();
+
     let (setting_root_sender, setting_root_receiver): (mpsc::Sender<bool>, mpsc::Receiver<bool>) =
         mpsc::channel();
     let sender = document::initialize_document_thread();
