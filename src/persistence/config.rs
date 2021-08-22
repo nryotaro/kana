@@ -1,54 +1,50 @@
 use crate::core::state::Configuration;
 use serde::{Deserialize, Serialize};
-use serde_json::Result;
 use std::env;
+use std::error::Error;
 use std::fs;
+use std::fs::File;
+use std::io;
+use std::io::prelude::*;
+use std::io::Read;
 use std::path::Path;
 use std::sync::mpsc;
 use std::thread;
-/*
-pub struct FileConfig {}
-
-impl Configuration for FileConfig {
-	fn get_root_directory(&self) -> Option<String> {
-		Some("".to_string())
-	}
-}
-pub fn load_config(config_path: String) -> Configuration {
-	//FileConfig {}
-}
-
-use std::fs;
-
-fn main() -> std::io::Result<()> {
-	fs::create_dir("/some/dir")?;
-	Ok(())
-}
-Run
-*/
 
 #[derive(Serialize, Deserialize)]
-struct Person {
-	name: String,
-	age: u8,
-	phones: Vec<String>,
+struct ConfigurationFile {
+	pub root_uri: Option<String>,
 }
 
-pub fn initialize_base_dir(base_dir: String) -> Result<(), String> {
-	match fs::create_dir_all(base_dir) {
+pub fn initialize_home(base_dir: String) -> Result<(), String> {
+	match fs::create_dir_all(&base_dir) {
 		Ok(_) => Ok(()),
 		Err(_) => Err(String::from("Failed to create the base directory.")),
-	}
+	}?;
+
+	let config_file = get_config_file_path(&base_dir);
+	if !Path::new(&config_file).exists() {
+		let text = serde_json::to_string(&ConfigurationFile { root_uri: None }).unwrap();
+		let mut f = fs::File::create(&config_file).unwrap();
+		f.write_all(&text.as_ref()).unwrap();
+	};
+	Ok(())
 }
 
 pub fn get_base_dir() -> String {
 	env::var("KANA_HOME").unwrap_or(format!("{}/.kana", env::var("HOME").unwrap()))
 }
 
-pub fn load_config(base_dir: String) -> Configuration {
-	let config_file = format!("{}/settings.json", base_dir);
-	match fs::read_to_string(config_file) {
-		Ok(text) => Configuration::new(),
-		Err(err) => Configuration::new(None),
-	}
+fn get_config_file_path(base_dir: &String) -> String {
+	format!("{}/settings.json", base_dir)
+}
+
+pub fn load_config(base_dir: &String) -> Result<Configuration, String> {
+	let config_path = get_config_file_path(&base_dir);
+	let config_text = fs::read_to_string(config_path);
+	let config_file: ConfigurationFile = match config_text {
+		Ok(text) => serde_json::from_str(text.as_ref()).unwrap(),
+		Err(_) => ConfigurationFile { root_uri: None },
+	};
+	Ok(Configuration::new(config_file.root_uri))
 }
