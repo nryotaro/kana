@@ -4,6 +4,7 @@ use std::env;
 use std::error::Error;
 use std::fs;
 use std::fs::File;
+use std::fs::OpenOptions;
 use std::io;
 use std::io::prelude::*;
 use std::io::Read;
@@ -16,7 +17,7 @@ struct ConfigurationFile {
 	pub root_uri: Option<String>,
 }
 
-pub fn initialize_home(base_dir: String) -> Result<(), String> {
+pub fn initialize_home(base_dir: &String) -> Result<(), String> {
 	match fs::create_dir_all(&base_dir) {
 		Ok(_) => Ok(()),
 		Err(_) => Err(String::from("Failed to create the base directory.")),
@@ -47,4 +48,19 @@ pub fn load_config(base_dir: &String) -> Result<Configuration, String> {
 		Err(_) => ConfigurationFile { root_uri: None },
 	};
 	Ok(Configuration::new(config_file.root_uri))
+}
+
+pub fn save_config(configuration: &Configuration) -> Result<(), String> {
+	let text = serde_json::to_string(&ConfigurationFile {
+		root_uri: configuration.get_root_uri(),
+	})
+	.unwrap();
+
+	let mut f = OpenOptions::new()
+		.append(true)
+		.create(true) // Optionally create the file if it doesn't already exist
+		.open(get_config_file_path(&get_base_dir()))
+		.expect("Unable to open file");
+	f.write_all(text.as_ref()).expect("Unable to write data");
+	Ok(())
 }

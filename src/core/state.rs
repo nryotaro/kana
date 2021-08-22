@@ -9,6 +9,10 @@ impl Configuration {
 	pub fn new(root_uri: Option<String>) -> Configuration {
 		Configuration { root_uri }
 	}
+
+	pub fn get_root_uri(&self) -> Option<String> {
+		self.root_uri.clone()
+	}
 }
 
 pub enum ConfigurationMessage {
