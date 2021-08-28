@@ -18,11 +18,7 @@ struct ConfigurationFile {
 }
 
 pub fn initialize_home(base_dir: &String) -> Result<(), String> {
-	match fs::create_dir_all(&base_dir) {
-		Ok(_) => Ok(()),
-		Err(_) => Err(String::from("Failed to create the base directory.")),
-	}?;
-
+	fs::create_dir_all(&base_dir).map_err(|_| "Failed to create the base directory.")?;
 	let config_file = get_config_file_path(&base_dir);
 	if !Path::new(&config_file).exists() {
 		let text = serde_json::to_string(&ConfigurationFile { root_uri: None }).unwrap();
