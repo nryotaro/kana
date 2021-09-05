@@ -3,7 +3,7 @@ use kana::core::document;
 use kana::core::state;
 use kana::persistence::config;
 use kana::persistence::samba::SambaClient;
-use kana::port;
+use kana::port::DocumentRepository;
 use kana::ui;
 use std::sync::mpsc;
 use std::thread;
@@ -29,6 +29,9 @@ fn main() {
     });
     */
     //sender.send();
+
+    let a: Box<SambaClient> = DocumentRepository::new("").unwrap();
+
     let base_dir = config::get_base_dir();
     config::initialize_home(&base_dir).unwrap();
     let configuration = config::load_config(&base_dir).unwrap();
@@ -36,8 +39,9 @@ fn main() {
 
     let (setting_root_sender, setting_root_receiver): (mpsc::Sender<bool>, mpsc::Receiver<bool>) =
         mpsc::channel();
-    let sender = document::initialize_document_thread();
+    let sender = document::initialize_document_thread(&document::create_document_port);
     //let configuration = config::load_config();
     let application = ui::initialize(sender);
     application.run();
 }
+

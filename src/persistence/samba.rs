@@ -9,7 +9,7 @@ pub struct SambaClient {
 }
 
 impl DocumentRepository for SambaClient {
-	fn new(url: &'static str) -> Option<Box<Self>> {
+	fn new(url: &str) -> Option<Box<Self>> {
 		let path = CString::new(url).unwrap();
 		let smbcctx = unsafe {
 			let smbcctx: *mut wrapper::_SMBCCTX = create_smbcctx().unwrap();
