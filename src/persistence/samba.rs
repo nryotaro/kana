@@ -1,5 +1,5 @@
 mod wrapper;
-use crate::port::DocumentRepository;
+use crate::port::DocumentPort;
 use std::ffi::CString;
 use std::os::raw::{c_char, c_int};
 
@@ -8,7 +8,7 @@ pub struct SambaClient {
 	url: String,
 }
 
-impl DocumentRepository for SambaClient {
+impl DocumentPort for SambaClient {
 	fn new(url: &str) -> Option<Box<Self>> {
 		let path = CString::new(url).unwrap();
 		let smbcctx = unsafe {

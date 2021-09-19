@@ -1,4 +1,4 @@
-pub trait DocumentRepository {
+pub trait DocumentPort {
 	fn new(url: & str) -> Option<Box<Self>>
 	where
 		Self: Sized;

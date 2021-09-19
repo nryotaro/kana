@@ -28,6 +28,9 @@ pub fn initialize_home(base_dir: &String) -> Result<(), String> {
 	Ok(())
 }
 
+/**
+ * base
+ */
 pub fn get_base_dir() -> String {
 	env::var("KANA_HOME").unwrap_or(format!("{}/.kana", env::var("HOME").unwrap()))
 }
