@@ -6,8 +6,8 @@ use kana::ui;
 use std::sync::mpsc;
 
 fn main() {
-    let base_dir = config::get_base_dir();
-    config::initialize_home(&base_dir).unwrap();
+    let base_dir: String = config::get_base_dir();
+    config::initialize_home(&base_dir);
     let configuration = config::load_config(&base_dir).unwrap();
     state::initialize_setting_thread(configuration, &config::save_config);
 

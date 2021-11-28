@@ -16,16 +16,17 @@ use std::thread;
 struct ConfigurationFile {
 	pub root_uri: Option<String>,
 }
-
-pub fn initialize_home(base_dir: &String) -> Result<(), String> {
-	fs::create_dir_all(&base_dir).map_err(|_| "Failed to create the base directory.")?;
+/**
+ * Create the base directory, and an empty configuration file.
+ */
+pub fn initialize_home(base_dir: &String) -> () {
+	fs::create_dir_all(&base_dir).unwrap();
 	let config_file = get_config_file_path(&base_dir);
 	if !Path::new(&config_file).exists() {
 		let text = serde_json::to_string(&ConfigurationFile { root_uri: None }).unwrap();
 		let mut f = fs::File::create(&config_file).unwrap();
 		f.write_all(&text.as_ref()).unwrap();
 	};
-	Ok(())
 }
 
 /**
@@ -39,14 +40,19 @@ fn get_config_file_path(base_dir: &String) -> String {
 	format!("{}/settings.json", base_dir)
 }
 
-pub fn load_config(base_dir: &String) -> Result<Configuration, String> {
+pub fn load_config(base_dir: &String) -> Result<Configuration, io::Error> {
 	let config_path = get_config_file_path(&base_dir);
-	let config_text = fs::read_to_string(config_path);
+	let config_text = fs::read_to_string(config_path)?;
+	let configuration_file: Result<ConfigurationFile, serde_json::Error> =
+		serde_json::from_str(config_text.as_ref());
+	let b = configuration_file.or_else(|e| Err(""))?;
+	/*
 	let config_file: ConfigurationFile = match config_text {
 		Ok(text) => serde_json::from_str(text.as_ref()).unwrap(),
 		Err(_) => ConfigurationFile { root_uri: None },
 	};
 	Ok(Configuration::new(config_file.root_uri))
+	*/
 }
 
 pub fn save_config(configuration: &Configuration) -> Result<(), String> {
